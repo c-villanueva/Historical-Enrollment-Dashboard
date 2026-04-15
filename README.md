@@ -78,7 +78,19 @@ The dashboard follows a **star schema design**:
 
 ## 📈 Key DAX Measures
 
-### Total Enrollment
+### Total Enrollment, Previous Year Enrollment, YOY Growth
 ```DAX
 Total Enrollment - All =
 SUM(f_Enrollment_By_Level[Enrollment])
+
+PY Enrollment =
+CALCULATE(
+    [Total Enrollment - All],
+    DATEADD(Dim_Calendar[AY_Start_Date], -1, YEAR)
+)
+
+PY Enrollment % =
+VAR _CY = [Total Enrollment - All]
+VAR _PY = [PY Enrollment]
+RETURN DIVIDE(_CY - _PY, _PY)
+
